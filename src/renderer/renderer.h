@@ -99,7 +99,7 @@ namespace vpbr {
 
         // Input
         bool mouseCaptured = false;
-        bool keys[SDL_NUM_SCANCODES] = {};
+        bool keys[SDL_SCANCODE_COUNT] = {};
 
         // Frame
         uint32_t currentFrame = 0;

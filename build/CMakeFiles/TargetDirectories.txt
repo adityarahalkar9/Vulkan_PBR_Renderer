@@ -1,0 +1,4 @@
+C:/Users/adity/Desktop/VulkanPBR/Vulkan_PBR_Renderer/build/CMakeFiles/VulkanPBR.dir
+C:/Users/adity/Desktop/VulkanPBR/Vulkan_PBR_Renderer/build/CMakeFiles/compile_shaders.dir
+C:/Users/adity/Desktop/VulkanPBR/Vulkan_PBR_Renderer/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/adity/Desktop/VulkanPBR/Vulkan_PBR_Renderer/build/CMakeFiles/ZERO_CHECK.dir

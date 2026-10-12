@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\core\timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\memory\buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\memory\image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\mesh_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\swapchain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\texture_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\vulkancontext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\scene\scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\common\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\core\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\memory\buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\memory\image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\mesh_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\swapchain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\texture_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\renderer\vulkancontext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\scene\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\scene\transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\utils\logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\src\utils\vulkanutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\adity\Desktop\VulkanPBR\Vulkan_PBR_Renderer\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{E41145FB-EC70-35CE-9330-D3212BEAF279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{AB7C83C0-D902-3651-BA00-69CC6D36923A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
