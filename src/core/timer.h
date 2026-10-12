@@ -1,4 +1,5 @@
 #pragma once
+
 #include <chrono>
 
 namespace vpbr {
@@ -7,6 +8,7 @@ namespace vpbr {
     public:
         void start();
         void tick();
+
         float getDeltaTime() const { return deltaTime; }
         float getTotalTime() const { return totalTime; }
         float getFPS() const { return deltaTime > 0.0f ? 1.0f / deltaTime : 0.0f; }

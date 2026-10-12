@@ -10,10 +10,10 @@ namespace vpbr {
     }
 
     void Timer::tick() {
-        const auto currentTime = Clock::now();
-        deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
-        totalTime = std::chrono::duration<float>(currentTime - startTime).count();
-        lastTime = currentTime;
+        const auto now = Clock::now();
+        deltaTime = std::chrono::duration<float>(now - lastTime).count();
+        totalTime = std::chrono::duration<float>(now - startTime).count();
+        lastTime = now;
     }
 
 } // namespace vpbr

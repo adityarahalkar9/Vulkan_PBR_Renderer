@@ -8,13 +8,10 @@
 
 namespace vpbr {
 
-    // ── Engine Constants ──────────────────────────────────────────────
     inline constexpr uint32_t MAX_FRAMES_IN_FLIGHT = 2;
     inline constexpr uint32_t SHADOW_MAP_SIZE = 2048;
     inline constexpr uint32_t MAX_LIGHTS = 4;
-    inline constexpr uint32_t PROFILER_HISTORY_SIZE = 120;
 
-    // ── Vertex ────────────────────────────────────────────────────────
     struct Vertex {
         glm::vec3 position;
         glm::vec3 normal;
@@ -22,32 +19,34 @@ namespace vpbr {
         glm::vec4 tangent;
 
         static VkVertexInputBindingDescription getBindingDescription() {
-            return {0, sizeof(Vertex), VK_VERTEX_INPUT_RATE_VERTEX};
+            VkVertexInputBindingDescription d{};
+            d.binding = 0;
+            d.stride = sizeof(Vertex);
+            d.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+            return d;
         }
 
         static std::array<VkVertexInputAttributeDescription, 4> getAttributeDescriptions() {
-            return {{
-                { 0, 0, VK_FORMAT_R32G32B32_SFLOAT,    offsetof(Vertex, position) },
-                { 1, 0, VK_FORMAT_R32G32B32_SFLOAT,    offsetof(Vertex, normal)   },
-                { 2, 0, VK_FORMAT_R32G32_SFLOAT,       offsetof(Vertex, texCoord) },
-                { 3, 0, VK_FORMAT_R32G32B32A32_SFLOAT, offsetof(Vertex, tangent)  },
-            }};
+            std::array<VkVertexInputAttributeDescription, 4> d{};
+            d[0] = {0, 0, VK_FORMAT_R32G32B32_SFLOAT,    offsetof(Vertex, position)};
+            d[1] = {1, 0, VK_FORMAT_R32G32B32_SFLOAT,    offsetof(Vertex, normal)};
+            d[2] = {2, 0, VK_FORMAT_R32G32_SFLOAT,       offsetof(Vertex, texCoord)};
+            d[3] = {3, 0, VK_FORMAT_R32G32B32A32_SFLOAT, offsetof(Vertex, tangent)};
+            return d;
         }
     };
-
-    // ── GPU Uniform Structs (must match GLSL layouts exactly) ─────────
 
     struct CameraUBO {
         alignas(16) glm::mat4 view;
         alignas(16) glm::mat4 proj;
         alignas(16) glm::mat4 viewProj;
-        alignas(16) glm::vec4 cameraPos; // xyz = position, w = unused
+        alignas(16) glm::vec4 cameraPos;
     };
 
     struct LightUBOData {
-        alignas(16) glm::vec4 position;          // xyz = pos/dir, w = type (0=dir, 1=point)
-        alignas(16) glm::vec4 direction;         // xyz = direction, w = unused
-        alignas(16) glm::vec4 color;             // xyz = color, w = intensity
+        alignas(16) glm::vec4 position;
+        alignas(16) glm::vec4 direction;
+        alignas(16) glm::vec4 color;
         alignas(16) glm::mat4 lightSpaceMatrix;
     };
 
