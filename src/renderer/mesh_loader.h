@@ -1,29 +1,28 @@
-// src/renderer/mesh.h
 #pragma once
+
+#include <vector>
+#include <utility>
+#include <cstdint>
+
 #include "common/types.h"
 #include "memory/buffer.h"
+#include "scene/scene.h"
 #include "renderer/vulkancontext.h"
-#include <vector>
 
 namespace vpbr {
 
     class MeshLoader {
     public:
-        // Create a cube mesh
-        static std::vector<Vertex> createCubeVertices();
-        static std::vector<uint32_t> createCubeIndices();
+        static std::pair<std::vector<Vertex>, std::vector<uint32_t>>
+            createCube(float size = 1.0f);
 
-        // Create a plane mesh
-        static std::vector<Vertex> createPlaneVertices(float size);
-        static std::vector<uint32_t> createPlaneIndices();
+        static std::pair<std::vector<Vertex>, std::vector<uint32_t>>
+            createPlane(float size = 1.0f);
 
-        // Create a sphere mesh
-        static std::vector<Vertex> createSphereVertices(float radius, uint32_t segments);
-        static std::vector<uint32_t> createSphereIndices(uint32_t segments);
+        static std::pair<std::vector<Vertex>, std::vector<uint32_t>>
+            createSphere(float radius = 0.5f, uint32_t segments = 32);
 
-        // Upload to GPU
-        static void uploadMesh(VulkanContext& ctx, Buffer& vertexBuffer,
-                               Buffer& indexBuffer,
+        static void uploadMesh(VulkanContext& ctx, Mesh& mesh,
                                const std::vector<Vertex>& vertices,
                                const std::vector<uint32_t>& indices);
     };

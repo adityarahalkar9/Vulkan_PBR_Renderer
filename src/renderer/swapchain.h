@@ -1,11 +1,12 @@
 #pragma once
+
 #include <vulkan/vulkan.h>
 #include <vk_mem_alloc.h>
 #include <vector>
 
 namespace vpbr {
 
-    class VulkanContext; // forward declare
+    class VulkanContext;
 
     class Swapchain {
     public:
@@ -13,17 +14,17 @@ namespace vpbr {
         void cleanup(VulkanContext& ctx);
         void recreate(VulkanContext& ctx, uint32_t width, uint32_t height);
 
-        VkSwapchainKHR           swapchain = VK_NULL_HANDLE;
-        VkFormat                 imageFormat = VK_FORMAT_B8G8R8A8_SRGB;
-        VkExtent2D               extent = {};
-        std::vector<VkImage>     images;
+        VkSwapchainKHR swapchain = VK_NULL_HANDLE;
+        VkFormat imageFormat = VK_FORMAT_B8G8R8A8_SRGB;
+        VkExtent2D extent = {};
+
+        std::vector<VkImage> images;
         std::vector<VkImageView> imageViews;
 
-        // Depth buffer
-        VkImage         depthImage = VK_NULL_HANDLE;
-        VmaAllocation   depthAllocation = VK_NULL_HANDLE;
-        VkImageView     depthImageView = VK_NULL_HANDLE;
-        VkFormat        depthFormat = VK_FORMAT_D32_SFLOAT;
+        VkImage depthImage = VK_NULL_HANDLE;
+        VmaAllocation depthAllocation = VK_NULL_HANDLE;
+        VkImageView depthImageView = VK_NULL_HANDLE;
+        VkFormat depthFormat = VK_FORMAT_D32_SFLOAT;
 
     private:
         void createSwapchain(VulkanContext& ctx, uint32_t width, uint32_t height);
@@ -33,7 +34,8 @@ namespace vpbr {
 
         VkSurfaceFormatKHR chooseFormat(const std::vector<VkSurfaceFormatKHR>& formats);
         VkPresentModeKHR chooseMode(const std::vector<VkPresentModeKHR>& modes);
-        VkExtent2D chooseExtent(const VkSurfaceCapabilitiesKHR& caps, uint32_t w, uint32_t h);
+        VkExtent2D chooseExtent(const VkSurfaceCapabilitiesKHR& caps,
+                                uint32_t w, uint32_t h);
     };
 
 } // namespace vpbr

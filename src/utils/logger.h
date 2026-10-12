@@ -10,17 +10,21 @@ namespace vpbr {
     inline void logMessage(LogLevel level, const char* fmt, ...) {
         const char* prefix = "";
         FILE* stream = stdout;
+
         switch(level) {
             case LogLevel::Info:  prefix = "[INFO ]"; break;
             case LogLevel::Warn:  prefix = "[WARN ]"; break;
             case LogLevel::Error: prefix = "[ERROR]"; stream = stderr; break;
             case LogLevel::Debug: prefix = "[DEBUG]"; break;
         }
+
         fprintf(stream, "%s ", prefix);
+
         va_list args;
         va_start(args, fmt);
         vfprintf(stream, fmt, args);
         va_end(args);
+
         fprintf(stream, "\n");
         fflush(stream);
     }

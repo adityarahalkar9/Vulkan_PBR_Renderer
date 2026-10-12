@@ -1,15 +1,16 @@
-// src/renderer/renderer.h
 #pragma once
+
 #include <vulkan/vulkan.h>
 #include <vk_mem_alloc.h>
+#include <glm/glm.hpp>
 #include <vector>
-#include <memory>
 
 #include "renderer/swapchain.h"
 #include "renderer/vulkancontext.h"
 #include "common/types.h"
 #include "scene/scene.h"
 #include "memory/buffer.h"
+#include "memory/image.h"
 
 namespace vpbr {
 
@@ -21,57 +22,59 @@ namespace vpbr {
                                uint32_t width, uint32_t height);
         void update(Scene& scene, float deltaTime);
         void drawFrame(VulkanContext& ctx, Swapchain& swapchain, Scene& scene);
-        void handleInput(const SDL_Event& event, float deltaTime);
+        void handleInput(const SDL_Event& event, Camera& camera);
 
     private:
-        // Render passes
         void createRenderPass(VulkanContext& ctx, Swapchain& swapchain);
         void createShadowRenderPass(VulkanContext& ctx);
-        void createShadowResources(VulkanContext& ctx);
-
-        // Pipeline
         void createDescriptorSetLayouts(VulkanContext& ctx);
+        void createDefaultTextures(VulkanContext& ctx);
+        void createShadowResources(VulkanContext& ctx);
         void createPipelines(VulkanContext& ctx, Swapchain& swapchain);
         void createShadowPipeline(VulkanContext& ctx);
-
-        // Framebuffer and sync
         void createFramebuffers(VulkanContext& ctx, Swapchain& swapchain);
+        void createUniformBuffers(VulkanContext& ctx, size_t imageCount);
+        void createDescriptorPool(VulkanContext& ctx, size_t imageCount);
+        void createGlobalDescriptorSets(VulkanContext& ctx, size_t imageCount);
+        void createShadowSamplerDescriptorSet(VulkanContext& ctx);
+        void createShadowPassDescriptorSet(VulkanContext& ctx);
+        void createMaterialDescriptorSets(VulkanContext& ctx, Scene& scene);
         void createCommandBuffers(VulkanContext& ctx);
         void createSyncObjects(VulkanContext& ctx);
-        void createUniformBuffers(VulkanContext& ctx, size_t swapchainImageCount);
 
-        // Descriptor sets
-        void createDescriptorPool(VulkanContext& ctx, size_t swapchainImageCount);
-        void createGlobalDescriptorSets(VulkanContext& ctx, size_t swapchainImageCount);
-        void createShadowDescriptorSets(VulkanContext& ctx);
-
-        // Per-frame data
-        void recordCommandBuffer(VkCommandBuffer cmd, uint32_t imageIndex,
-                                 Swapchain& swapchain, Scene& scene);
+        void updateUniformBuffers(VulkanContext& ctx, uint32_t imageIdx,
+                                  Scene& scene, float aspect);
         void recordShadowPass(VkCommandBuffer cmd, Scene& scene);
-        void updateUniformBuffers(uint32_t currentImage, Scene& scene);
+        void recordMainPass(VkCommandBuffer cmd, uint32_t imageIdx,
+                            Swapchain& swapchain, Scene& scene);
 
-        // Vulkan objects
+        // Render passes
         VkRenderPass renderPass = VK_NULL_HANDLE;
         VkRenderPass shadowRenderPass = VK_NULL_HANDLE;
 
+        // Descriptor layouts
         VkDescriptorSetLayout globalSetLayout = VK_NULL_HANDLE;
         VkDescriptorSetLayout materialSetLayout = VK_NULL_HANDLE;
-        VkDescriptorSetLayout shadowSetLayout = VK_NULL_HANDLE;
+        VkDescriptorSetLayout shadowSamplerSetLayout = VK_NULL_HANDLE;
+        VkDescriptorSetLayout shadowPassSetLayout = VK_NULL_HANDLE;
+
+        // Pipelines
         VkPipelineLayout pipelineLayout = VK_NULL_HANDLE;
         VkPipelineLayout shadowPipelineLayout = VK_NULL_HANDLE;
-
         VkPipeline graphicsPipeline = VK_NULL_HANDLE;
         VkPipeline shadowPipeline = VK_NULL_HANDLE;
 
+        // Descriptors
         VkDescriptorPool descriptorPool = VK_NULL_HANDLE;
         std::vector<VkDescriptorSet> globalDescriptorSets;
-        VkDescriptorSet shadowDescriptorSet = VK_NULL_HANDLE;
+        VkDescriptorSet shadowSamplerDescriptorSet = VK_NULL_HANDLE;
+        VkDescriptorSet shadowPassDescriptorSet = VK_NULL_HANDLE;
 
+        // Framebuffers
         std::vector<VkFramebuffer> framebuffers;
         VkFramebuffer shadowFramebuffer = VK_NULL_HANDLE;
 
-        // Shadow map resources
+        // Shadow map
         Image shadowMapImage;
         VkSampler shadowSampler = VK_NULL_HANDLE;
 
@@ -80,30 +83,28 @@ namespace vpbr {
         std::vector<Buffer> lightsUBOs;
         Buffer shadowLightSpaceUBO;
 
-        // Sync objects
+        // Default textures
+        Image defaultWhiteTex;
+        Image defaultNormalTex;
+        Image defaultBlackTex;
+
+        // Sync
         std::vector<VkSemaphore> imageAvailableSemaphores;
         std::vector<VkSemaphore> renderFinishedSemaphores;
         std::vector<VkFence> inFlightFences;
         std::vector<VkFence> imagesInFlight;
 
-        // Command buffers (per swapchain image)
+        // Commands
         std::vector<VkCommandBuffer> commandBuffers;
 
-        // Camera state
-        glm::vec3 cameraPos = glm::vec3(0.0f, 1.5f, 5.0f);
-        glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-        glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-        float cameraYaw = -90.0f;
-        float cameraPitch = 0.0f;
-        float fov = 60.0f;
-        float nearPlane = 0.1f;
-        float farPlane = 100.0f;
+        // Input
+        bool mouseCaptured = false;
+        bool keys[SDL_NUM_SCANCODES] = {};
 
-        // Frame tracking
+        // Frame
         uint32_t currentFrame = 0;
         bool framebufferResized = false;
 
-        // Light space matrix
         glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);
     };
 
