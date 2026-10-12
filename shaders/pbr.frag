@@ -51,7 +51,6 @@ float DistributionGGX(vec3 N, vec3 H, float roughness) {
     float a2 = a * a;
     float NdotH = max(dot(N, H), 0.0);
     float NdotH2 = NdotH * NdotH;
-
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     return a2 / (PI * denom * denom);
 }
@@ -59,7 +58,6 @@ float DistributionGGX(vec3 N, vec3 H, float roughness) {
 float GeometrySchlickGGX(float NdotV, float roughness) {
     float r = (roughness + 1.0);
     float k = (r * r) / 8.0;
-
     return NdotV / (NdotV * (1.0 - k) + k);
 }
 
@@ -68,7 +66,6 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
     float NdotL = max(dot(N, L), 0.0);
     float ggx2 = GeometrySchlickGGX(NdotV, roughness);
     float ggx1 = GeometrySchlickGGX(NdotL, roughness);
-
     return ggx1 * ggx2;
 }
 
@@ -78,10 +75,9 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
 
 float shadowCalculation(vec4 fragPosLightSpace, vec3 N, vec3 L) {
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
-    // Vulkan NDC xy [-1, 1] to [0, 1]
     projCoords.xy = projCoords.xy * 0.5 + 0.5;
+    projCoords.y = 1.0 - projCoords.y;
 
-    // Check outside shadow frustum bounds
     if (projCoords.z > 1.0 || projCoords.z < 0.0 ||
         projCoords.x < 0.0 || projCoords.x > 1.0 ||
         projCoords.y < 0.0 || projCoords.y > 1.0) {
@@ -91,7 +87,6 @@ float shadowCalculation(vec4 fragPosLightSpace, vec3 N, vec3 L) {
     float bias = max(0.005 * (1.0 - dot(N, L)), 0.0005);
     vec2 texelSize = 1.0 / vec2(textureSize(shadowMap, 0));
     float shadow = 0.0;
-
     for (int x = -1; x <= 1; ++x) {
         for (int y = -1; y <= 1; ++y) {
             float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
@@ -99,12 +94,10 @@ float shadowCalculation(vec4 fragPosLightSpace, vec3 N, vec3 L) {
         }
     }
     shadow /= 9.0;
-
     return shadow;
 }
 
 void main() {
-    // 1. Texture sampling and material factor application
     vec4 baseColor = texture(baseColorMap, fragTexCoord) * material.baseColorFactor;
     vec3 albedo = baseColor.rgb;
 
@@ -117,38 +110,31 @@ void main() {
 
     vec3 emissive = texture(emissiveMap, fragTexCoord).rgb * material.emissiveFactor.rgb;
 
-    // 2. Reconstruct TBN matrix
     vec3 N = normalize(fragNormal);
     vec3 T = normalize(fragTangent.xyz);
     T = normalize(T - dot(T, N) * N);
     vec3 B = cross(N, T) * fragTangent.w;
     mat3 TBN = mat3(T, B, N);
 
-    // 3. Normal mapping
     vec3 normalSample = texture(normalMap, fragTexCoord).rgb * 2.0 - 1.0;
     normalSample.xy *= material.normalScale;
     N = normalize(TBN * normalSample);
 
     vec3 V = normalize(camera.cameraPos.xyz - fragWorldPos);
-
     vec3 F0 = vec3(0.04);
     F0 = mix(F0, albedo, metallic);
 
     vec3 Lo = vec3(0.0);
 
-    // 4. Evaluate Cook-Torrance PBR for each active light
     int count = clamp(lightsUBO.numLights, 0, 4);
     for (int i = 0; i < count; ++i) {
         vec3 L;
         vec3 radiance;
 
-        // Position.w == 0.0 implies directional light; otherwise point light
-        if (lightsUBO.lights[i].position.w == 0.0 || length(lightsUBO.lights[i].direction.xyz) > 0.001) {
-            // Directional light
+        if (lightsUBO.lights[i].position.w == 0.0) {
             L = normalize(-lightsUBO.lights[i].direction.xyz);
             radiance = lightsUBO.lights[i].color.rgb * lightsUBO.lights[i].color.a;
         } else {
-            // Point light
             vec3 lightToPos = lightsUBO.lights[i].position.xyz - fragWorldPos;
             float distance = length(lightToPos);
             L = normalize(lightToPos);
@@ -182,13 +168,9 @@ void main() {
         }
     }
 
-    // 6. Ambient term
     vec3 ambient = vec3(0.03) * albedo * ao;
-
-    // 7. Combined with emissive
     vec3 color = ambient + Lo + emissive;
 
-    // 8. Reinhard tonemapping and gamma correction
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0 / 2.2));
 
