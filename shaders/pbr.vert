@@ -41,7 +41,6 @@ void main() {
     mat3 normalMatrix = transpose(inverse(mat3(push.model)));
     fragNormal = normalize(normalMatrix * inNormal);
     fragTangent = vec4(normalize(normalMatrix * inTangent.xyz), inTangent.w);
-
     fragWorldPos = worldPos.xyz;
     fragTexCoord = inTexCoord;
     fragLightSpacePos = lightsUBO.lights[0].lightSpaceMatrix * worldPos;
