@@ -1,5 +1,5 @@
-#include "memory/Image.h"
-#include "utils/VulkanUtils.h"
+#include "memory/image.h"
+#include "utils/vulkanutils.h"
 
 #include <stdexcept>
 

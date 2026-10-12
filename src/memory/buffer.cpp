@@ -1,5 +1,5 @@
 #include "memory/buffer.h"
-#include "utils/VulkanUtils.h"
+#include "utils/vulkanutils.h"
 
 #include <cstring>
 
