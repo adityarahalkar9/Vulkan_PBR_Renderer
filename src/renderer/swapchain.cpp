@@ -1,7 +1,7 @@
-#include "renderer/Swapchain.h"
-#include "renderer/VulkanContext.h"
-#include "utils/Logger.h"
-#include "utils/VulkanUtils.h"
+#include "renderer/swapchain.h"
+#include "renderer/vulkanContext.h"
+#include "utils/logger.h"
+#include "utils/vulkanUtils.h"
 
 #include <algorithm>
 #include <limits>
