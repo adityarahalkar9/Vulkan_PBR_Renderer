@@ -1,11 +1,8 @@
 #include "memory/image.h"
 #include "utils/vulkanutils.h"
-
-namespace vpbr {
-
+namespace vpbr{
     void Image::create(VmaAllocator allocator, uint32_t w, uint32_t h,
-                       VkFormat fmt, VkImageUsageFlags usage, uint32_t mips)
-    {
+                       VkFormat fmt, VkImageUsageFlags usage, uint32_t mips){
         width = w;
         height = h;
         format = fmt;
@@ -29,14 +26,10 @@ namespace vpbr {
         VmaAllocationCreateInfo allocInfo{};
         allocInfo.usage = VMA_MEMORY_USAGE_GPU_ONLY;
 
-        VK_CHECK(vmaCreateImage(allocator, &info, &allocInfo,
-                                &image, &allocation, nullptr),
-                 "Failed to create image");
+        VK_CHECK(vmaCreateImage(allocator, &info, &allocInfo,&image, &allocation, nullptr),"Failed to create image");
     }
 
-    void Image::createView(VkDevice device, VkFormat fmt,
-                           VkImageAspectFlags aspect, uint32_t mips)
-    {
+    void Image::createView(VkDevice device, VkFormat fmt,VkImageAspectFlags aspect, uint32_t mips){
         format = fmt;
         mipLevels = mips;
 
@@ -55,7 +48,7 @@ namespace vpbr {
                  "Failed to create image view");
     }
 
-    void Image::createSampler(VkDevice device, VkFilter filter, uint32_t mips) {
+    void Image::createSampler(VkDevice device, VkFilter filter, uint32_t mips){
         VkSamplerCreateInfo info{};
         info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
         info.magFilter = filter;
@@ -78,16 +71,16 @@ namespace vpbr {
                  "Failed to create sampler");
     }
 
-    void Image::destroy(VmaAllocator allocator, VkDevice device) {
-        if(sampler != VK_NULL_HANDLE) {
+    void Image::destroy(VmaAllocator allocator, VkDevice device){
+        if(sampler != VK_NULL_HANDLE){
             vkDestroySampler(device, sampler, nullptr);
             sampler = VK_NULL_HANDLE;
         }
-        if(view != VK_NULL_HANDLE) {
+        if(view != VK_NULL_HANDLE){
             vkDestroyImageView(device, view, nullptr);
             view = VK_NULL_HANDLE;
         }
-        if(image != VK_NULL_HANDLE) {
+        if(image != VK_NULL_HANDLE){
             vmaDestroyImage(allocator, image, allocation);
             image = VK_NULL_HANDLE;
             allocation = VK_NULL_HANDLE;
@@ -99,8 +92,7 @@ namespace vpbr {
 
     void Image::transitionLayout(VkCommandBuffer cmd, VkImage img,
                                  VkImageLayout oldLayout, VkImageLayout newLayout,
-                                 uint32_t mips)
-    {
+                                 uint32_t mips){
         VkImageMemoryBarrier barrier{};
         barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
         barrier.oldLayout = oldLayout;
